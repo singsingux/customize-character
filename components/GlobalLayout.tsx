@@ -34,7 +34,7 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
 
       {/* 네비게이션 - Save 페이지에서는 숨김 */}
       {!isSavePage && (
-        <div className="w-full px-8 py-6 fixed top-0 left-0 right-0 z-50" style={{ minHeight: '88px', backgroundColor: 'transparent' }}>
+        <div className="w-full px-4 sm:px-8 py-4 sm:py-6 fixed top-0 left-0 right-0 z-50" style={{ minHeight: '64px', backgroundColor: 'transparent' }}>
           <div className="relative" style={{ width: '100%', height: '48px' }}>
             {/* 중앙: Nav 컨테이너 (로고 + 메뉴) - 화면 정중앙에 절대 위치 고정 */}
             <div 
@@ -48,9 +48,9 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
                 border: '1px solid #EDF2F7',
                 boxShadow: '0 1px 8px rgba(48, 58, 75, 0.08)',
                 height: '48px',
-                paddingLeft: '24px',
-                paddingRight: '24px',
-                gap: '120px'
+                paddingLeft: '16px',
+                paddingRight: '16px',
+                gap: '40px'
               }}
             >
               {/* 로고 */}
@@ -61,9 +61,10 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
                   width={24}
                   height={24}
                   priority
-                  style={{ width: '24px', height: '24px', objectFit: 'contain' }}
+                  style={{ width: '20px', height: '20px', objectFit: 'contain' }}
                 />
                 <div 
+                  className="hidden sm:block"
                   style={{
                     width: '1px',
                     height: '24px',
@@ -72,9 +73,10 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
                   }}
                 />
                 <span 
+                  className="hidden sm:inline"
                   style={{ 
                     color: '#010820',
-                    fontSize: '16px',
+                    fontSize: '14px',
                     lineHeight: '130%',
                     fontWeight: 500
                   }}
@@ -84,11 +86,11 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
               </div>
               
               {/* 메뉴 */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <button
                   onClick={() => handleNavigation('/')}
+                  className="text-xs sm:text-sm"
                   style={{
-                    fontSize: '14px',
                     lineHeight: '130%',
                     fontWeight: 500,
                     color: pathname === '/' ? '#010820' : '#A0AEC0',
@@ -102,8 +104,8 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
                 </button>
                 <button
                   onClick={() => handleNavigation('/customize')}
+                  className="text-xs sm:text-sm"
                   style={{
-                    fontSize: '14px',
                     lineHeight: '130%',
                     fontWeight: 500,
                     color: pathname === '/customize' ? '#010820' : '#A0AEC0',
@@ -116,7 +118,7 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
                   Create
                 </button>
                 <div 
-                  className="relative"
+                  className="relative hidden sm:block"
                   onMouseEnter={() => setShowTooltip(true)}
                   onMouseLeave={() => setShowTooltip(false)}
                 >
@@ -185,19 +187,18 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
                     }, 100);
                   }
                 }}
-                className="text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center"
+                className="text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center text-sm sm:text-base"
                 style={{
                   position: 'absolute',
                   right: '0',
                   top: '0',
                   height: '48px',
-                  paddingLeft: '24px',
-                  paddingRight: '16px',
-                  fontSize: '16px',
+                  paddingLeft: '16px',
+                  paddingRight: '12px',
                   lineHeight: '140%',
                   fontWeight: 600,
                   backgroundColor: '#010820',
-                  gap: '8px'
+                  gap: '6px'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = '#303A4B';
@@ -212,7 +213,8 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
                   alt="Save"
                   width={20}
                   height={20}
-                  style={{ width: '20px', height: '20px' }}
+                  style={{ width: '16px', height: '16px' }}
+                  className="hidden sm:block"
                 />
               </button>
             )}

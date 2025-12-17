@@ -218,3 +218,15 @@ input[type="range"]::-moz-range-progress {
   scrollbar-color: #CBD5E0 transparent;
 }
 
+/* 모바일 반응형 스타일 */
+@media (max-width: 1024px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* 터치 디바이스 최적화 */
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+

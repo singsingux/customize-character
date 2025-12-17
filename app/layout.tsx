@@ -5,6 +5,12 @@ import GlobalLayout from '@/components/GlobalLayout'
 export const metadata: Metadata = {
   title: 'REDROB Avatar Creator',
   description: 'Create your custom avatar',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
 }
 
 export default function RootLayout({

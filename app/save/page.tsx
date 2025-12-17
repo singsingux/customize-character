@@ -357,20 +357,20 @@ function SavePageContent() {
       {/* 좌측 뒤로가기 버튼 - nav와 같은 높이 */}
       <button
         onClick={handleGoBack}
+        className="text-sm sm:text-base"
         style={{
           position: 'fixed',
-          left: '24px',
-          top: '24px',
-          height: '48px',
+          left: '16px',
+          top: '16px',
+          height: '40px',
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
-          paddingLeft: '16px',
-          paddingRight: '24px',
+          gap: '6px',
+          paddingLeft: '12px',
+          paddingRight: '16px',
           backgroundColor: '#FFFFFF',
           border: '1px solid #EDF2F7',
           borderRadius: '100px',
-          fontSize: '16px',
           fontWeight: 500,
           color: '#010820',
           cursor: 'pointer',
@@ -397,12 +397,13 @@ function SavePageContent() {
 
       {/* 중앙 컨테이너 */}
       <div
+        className="w-[90%] sm:w-[680px]"
         style={{
-          width: '680px',
+          maxWidth: '680px',
           backgroundColor: '#F7F9FB',
           border: '1px solid #EDF2F7',
           borderRadius: '16px',
-          padding: '32px',
+          padding: '24px',
           boxShadow: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
           display: 'flex',
           flexDirection: 'column',
@@ -428,13 +429,12 @@ function SavePageContent() {
         {/* 캐릭터 프리뷰 */}
         <div
           ref={previewRef}
+          className="w-[250px] h-[250px] sm:w-[300px] sm:h-[300px]"
           style={{
-            width: '300px',
-            height: '300px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom: '32px',
+            marginBottom: '24px',
             position: 'relative',
           }}
         >

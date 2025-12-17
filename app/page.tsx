@@ -13,12 +13,23 @@ export default function Home() {
   // 랜덤 캐릭터 12개 생성 (무한 스크롤 효과를 위해)
   const [randomCharacters, setRandomCharacters] = useState<CharacterAttributes[]>([]);
   const [isClient, setIsClient] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
+    setIsMobile(window.innerWidth < 640);
+    
     // 12개의 랜덤 캐릭터 생성
     const characters = Array.from({ length: 12 }, () => generateRandomCharacter());
     setRandomCharacters(characters);
+    
+    // 리사이즈 이벤트 핸들러
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleStartClick = () => {
@@ -30,11 +41,11 @@ export default function Home() {
       className="h-screen flex flex-col overflow-hidden relative fade-in"
     >
       {/* 중앙 컨텐츠 */}
-      <div className="flex-1 flex flex-col items-center justify-center px-8 relative z-10" style={{ paddingTop: '88px' }}>
+      <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-8 relative z-10" style={{ paddingTop: '88px' }}>
         <div className="text-center max-w-4xl">
           <h1 
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
             style={{
-              fontSize: '72px',
               lineHeight: '120%',
               letterSpacing: '-0.02em',
               fontWeight: 700,
@@ -45,15 +56,15 @@ export default function Home() {
             Wanted: Redrob's<br />Robbers Mugshot Lab
           </h1>
           <p 
+            className="text-base sm:text-lg"
             style={{
-              fontSize: '18px',
               lineHeight: '120%',
               fontWeight: 400,
               color: '#718096',
               marginBottom: '40px'
             }}
           >
-            Create your best look—it’s mugshot o’clock!
+            Create your best look—it's mugshot o'clock!
           </p>
 
           {/* CTA 버튼 */}
@@ -88,9 +99,9 @@ export default function Home() {
 
       {/* 하단 무한 배너 */}
       {isClient && randomCharacters.length > 0 && (
-        <div className="w-full pb-12 relative z-10 overflow-hidden">
+        <div className="w-full pb-8 sm:pb-12 relative z-10 overflow-hidden">
           <div 
-            className="flex gap-8"
+            className="flex gap-4 sm:gap-8"
             style={{
               animation: 'scroll-banner 80s linear infinite',
               width: 'fit-content'
@@ -102,13 +113,13 @@ export default function Home() {
                 key={index} 
                 className="flex-shrink-0 rounded-full flex items-center justify-center"
                 style={{ 
-                  width: '300px', 
-                  height: '300px',
+                  width: isMobile ? '150px' : '300px', 
+                  height: isMobile ? '150px' : '300px',
                   backgroundColor: character.background.color,
                   overflow: 'hidden'
                 }}
               >
-                <CharacterPreview character={character} size={300} />
+                <CharacterPreview character={character} size={isMobile ? 150 : 300} />
               </div>
             ))}
           </div>
