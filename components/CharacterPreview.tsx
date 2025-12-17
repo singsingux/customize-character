@@ -701,11 +701,11 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
         {/* Layer 4: Mouth */}
         {renderMouthItem()}
         
-        {/* Layer 5: Hair */}
-        {renderHairItem()}
-        
-        {/* Layer 6: Features */}
+        {/* Layer 5: Features */}
         {renderFeaturesItem()}
+        
+        {/* Layer 6: Hair */}
+        {renderHairItem()}
         
         {/* Layer 7: Accessories - 가장 상단 */}
         {renderAccessoriesItem()}

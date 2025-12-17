@@ -258,7 +258,18 @@ function SavePageContent() {
         }
       }
 
-      // Layer 5: Hair - 색상 적용
+      // Layer 5: Features
+      if (character.features?.featureItemId) {
+        try {
+          const img = await loadImage(`/features-item-${character.features.featureItemId}.svg`);
+          ctx.drawImage(img, center - baseSize / 2, center - baseSize / 2, baseSize, baseSize);
+          console.log('Drew: features');
+        } catch (error) {
+          console.error('Failed: features', error);
+        }
+      }
+
+      // Layer 6: Hair - 색상 적용
       if (character.hair.hairItemId) {
         try {
           const hairSrc = `/hair-item-${character.hair.hairItemId}.svg`;
@@ -272,17 +283,6 @@ function SavePageContent() {
           console.log('Drew: hair with color', character.hair.color);
         } catch (error) {
           console.error('Failed: hair', error);
-        }
-      }
-
-      // Layer 6: Features
-      if (character.features?.featureItemId) {
-        try {
-          const img = await loadImage(`/features-item-${character.features.featureItemId}.svg`);
-          ctx.drawImage(img, center - baseSize / 2, center - baseSize / 2, baseSize, baseSize);
-          console.log('Drew: features');
-        } catch (error) {
-          console.error('Failed: features', error);
         }
       }
 
