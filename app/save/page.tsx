@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import CharacterPreview from '@/components/CharacterPreview';
 import { CharacterAttributes } from '@/types/character';
@@ -24,7 +24,7 @@ const BACKGROUND_PATTERNS = [
   { id: 'pattern3', name: 'Pattern 3', image: '/pattern-item-3.png' },
 ];
 
-export default function SavePage() {
+function SavePageContent() {
   const router = useRouter();
   const [character, setCharacter] = useState<CharacterAttributes>(DEFAULT_CHARACTER);
   const [selectedBackground, setSelectedBackground] = useState<string>('#FFFFFF');
@@ -703,6 +703,25 @@ export default function SavePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SavePage() {
+  return (
+    <Suspense fallback={
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        minHeight: '100vh',
+        fontSize: '16px',
+        color: '#718096'
+      }}>
+        Loading...
+      </div>
+    }>
+      <SavePageContent />
+    </Suspense>
   );
 }
 
