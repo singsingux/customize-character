@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import CharacterPreview from '@/components/CharacterPreview';
 import { CharacterAttributes } from '@/types/character';
 import { DEFAULT_CHARACTER } from '@/lib/constants';
@@ -26,15 +26,13 @@ const BACKGROUND_PATTERNS = [
 
 export default function SavePage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [character, setCharacter] = useState<CharacterAttributes>(DEFAULT_CHARACTER);
   const [selectedBackground, setSelectedBackground] = useState<string>('#FFFFFF');
   const [selectedPattern, setSelectedPattern] = useState<string | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // URL에서 캐릭터 데이터 가져오기 (향후 구현)
-    // 현재는 localStorage에서 가져오기
+    // localStorage에서 캐릭터 데이터 가져오기
     const savedCharacter = localStorage.getItem('currentCharacter');
     if (savedCharacter) {
       setCharacter(JSON.parse(savedCharacter));
