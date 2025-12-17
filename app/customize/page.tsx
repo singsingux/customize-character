@@ -204,309 +204,156 @@ export default function CustomizePage() {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden relative fade-in">
-      {/* 왼쪽: Floating Category Menu - Fixed */}
-      <div 
-        className="fixed flex items-center z-40"
-        style={{
-          left: 0,
-          top: '50%',
-          transform: 'translateY(-50%)'
-        }}
-      >
-        <div className="relative">
+      {/* 메인 컨텐츠 - 수직 레이아웃 */}
+      <div className="flex-1 flex flex-col overflow-auto" style={{ paddingTop: '72px', paddingBottom: '24px' }}>
+        
+        {/* 상단: 프리뷰 */}
+        <div className="flex items-center justify-center" style={{ paddingTop: '24px', paddingBottom: '20px' }}>
           <div 
-            className="flex flex-col"
+            className="rounded-full flex items-center justify-center"
             style={{
-              backgroundColor: '#FFFFFF',
-              border: '1px solid #EDF2F7',
-              boxShadow: '0 1px 8px rgba(48, 58, 75, 0.08)',
-              borderTopRightRadius: '16px',
-              borderBottomRightRadius: '16px',
-              overflow: 'hidden'
+              width: '300px',
+              height: '300px',
+              backgroundColor: '#F7F9FB',
+              overflow: 'hidden',
+              position: 'relative'
             }}
           >
-            {categories.map((category, index) => (
-              <div key={category.id}>
+            <CharacterPreview character={character} size={300} />
+          </div>
+        </div>
+
+        {/* 중간: 액션 버튼들 */}
+        <div className="flex items-center justify-center" style={{ gap: '12px', paddingBottom: '24px' }}>
+          {/* Surprise Me 버튼 */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={handleRandomize}
+              onMouseEnter={() => setIsSurpriseMeHovered(true)}
+              onMouseLeave={() => setIsSurpriseMeHovered(false)}
+              className="surprise-me-btn rounded-full transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center"
+              style={{
+                paddingTop: '12px',
+                paddingBottom: '12px',
+                paddingLeft: '20px',
+                paddingRight: '20px',
+                height: '48px',
+                fontSize: '14px',
+                lineHeight: '140%',
+                fontWeight: 600,
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #EDF2F7',
+                color: '#010820',
+                gap: '6px'
+              }}
+            >
+              <svg 
+                width="20" 
+                height="20" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                className="rotate-on-hover"
+                style={{ width: '20px', height: '20px', transition: 'transform 0.3s ease' }}
+              >
+                <path d="M10.6045 3.87207C11.1042 2.60696 12.8958 2.60696 13.3955 3.87207L15.0605 8.09668C15.1939 8.43471 15.4452 8.71098 15.7646 8.87695L15.9062 8.94141L20.1299 10.6074C21.3951 11.1072 21.3951 12.8978 20.1299 13.3975L15.9062 15.0635C15.5197 15.2159 15.213 15.5216 15.0605 15.9082L13.3955 20.1318C12.9269 21.3182 11.3229 21.3922 10.7129 20.3535L10.6045 20.1318L8.93945 15.9082C8.78699 15.5216 8.48034 15.2159 8.09375 15.0635L3.87012 13.3975L3.64844 13.29C2.67874 12.7206 2.67874 11.2843 3.64844 10.7148L3.87012 10.6074L8.09375 8.94141C8.43203 8.80799 8.70901 8.55696 8.875 8.2373L8.93945 8.09668L10.6045 3.87207ZM10.334 8.64648C10.029 9.41949 9.41661 10.032 8.64355 10.3369L4.42188 12.002L8.64355 13.668C9.41672 13.9729 10.029 14.5852 10.334 15.3584L12 19.5801L13.666 15.3584C13.971 14.5852 14.5833 13.9729 15.3564 13.668L19.5781 12.002L15.3564 10.3369C14.5834 10.032 13.971 9.41949 13.666 8.64648L12 4.4248L10.334 8.64648Z" fill="#010820"/>
+              </svg>
+              Surprise Me
+            </button>
+          </div>
+
+          {/* Reset 버튼 (아이콘만) */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={handleReset}
+              onMouseEnter={() => setIsResetHovered(true)}
+              onMouseLeave={() => setIsResetHovered(false)}
+              className="reset-btn rounded-full transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center"
+              style={{
+                width: '48px',
+                height: '48px',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #EDF2F7'
+              }}
+            >
+              <svg 
+                width="20" 
+                height="20" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                className="rotate-on-hover"
+                style={{ width: '20px', height: '20px', transition: 'transform 0.3s ease' }}
+              >
+                <path d="M3.75 11.25C4.16421 11.25 4.5 11.5858 4.5 12C4.5 16.1421 7.85786 19.5 12 19.5C14.4515 19.5 16.6268 18.3229 17.9951 16.5039H16.0068C15.5927 16.5038 15.2569 16.168 15.2568 15.7539C15.2569 15.3398 15.5927 15.004 16.0068 15.0039H20.25C20.664 15.0041 20.999 15.3399 20.999 15.7539V19.9961C20.999 20.4102 20.664 20.7459 20.25 20.7461C19.8358 20.7461 19.5 20.4103 19.5 19.9961V16.9727C17.8881 19.3994 15.1317 21 12 21C7.02944 21 3 16.9706 3 12C3 11.5858 3.33579 11.25 3.75 11.25ZM12 3C16.9706 3 21 7.02944 21 12C21 12.4142 20.6642 12.75 20.25 12.75C19.8358 12.75 19.5 12.4142 19.5 12C19.5 7.85786 16.1421 4.5 12 4.5C9.54851 4.5 7.37322 5.67714 6.00488 7.49609H7.99316C8.40728 7.49617 8.7431 7.83198 8.74316 8.24609C8.74314 8.66024 8.4073 8.99602 7.99316 8.99609H3.75C3.336 8.99586 3.001 8.66014 3.00098 8.24609V4.00391C3.00098 3.58984 3.33599 3.25414 3.75 3.25391C4.16419 3.25393 4.5 3.58971 4.5 4.00391V7.02734C6.11191 4.60056 8.86829 3 12 3Z" fill="#010820"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* 하단: 카테고리 메뉴 + 컨트롤 */}
+        <div className="flex-1 flex flex-col" style={{ maxWidth: '100%', paddingLeft: '16px', paddingRight: '16px' }}>
+          
+          {/* 카테고리 메뉴 (가로 스크롤) */}
+          <div className="w-full overflow-x-auto horizontal-scroll" style={{ paddingBottom: '16px' }}>
+            <div className="flex gap-3" style={{ minWidth: 'fit-content', justifyContent: 'center' }}>
+              {categories.map((category) => (
                 <button
+                  key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  onMouseEnter={() => setHoveredCategory(category.id)}
-                  onMouseLeave={() => setHoveredCategory(null)}
-                  className="flex items-center justify-center transition-all duration-200"
+                  className="flex-shrink-0 flex flex-col items-center justify-center rounded-xl transition-all duration-200"
                   style={{
-                    width: '56px',
-                    height: '56px',
-                    backgroundColor: selectedCategory === category.id ? '#F7F9FB' : 'transparent'
+                    width: '80px',
+                    height: '80px',
+                    backgroundColor: selectedCategory === category.id ? '#F7F9FB' : '#FFFFFF',
+                    border: `1px solid ${selectedCategory === category.id ? '#3B82F6' : '#EDF2F7'}`,
+                    boxShadow: selectedCategory === category.id ? '0 1px 8px rgba(59, 130, 246, 0.16)' : '0 1px 2px rgba(48, 58, 75, 0.08)',
                   }}
                 >
                   <Image 
                     src={category.icon}
                     alt={category.label}
-                    width={24}
-                    height={24}
+                    width={28}
+                    height={28}
                     unoptimized
                     style={{ 
-                      width: '24px', 
-                      height: '24px',
-                      opacity: selectedCategory === category.id ? 1 : 0.4
+                      width: '28px', 
+                      height: '28px',
+                      opacity: selectedCategory === category.id ? 1 : 0.4,
+                      marginBottom: '6px'
                     }}
                   />
-                </button>
-                
-                {/* Divider - 마지막 메뉴 제외 */}
-                {index < categories.length - 1 && (
-                  <div 
-                    style={{
-                      height: '1px',
-                      backgroundColor: '#EDF2F7',
-                      width: '100%'
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-          
-          {/* Tooltips - 메뉴 컨테이너 밖에 렌더링 */}
-          {categories.map((category, index) => (
-            hoveredCategory === category.id && (
-              <div
-                key={`tooltip-${category.id}`}
-                className="absolute left-full whitespace-nowrap pointer-events-none"
-                style={{
-                  top: `${28 + index * 57}px`,
-                  transform: 'translateY(-50%)',
-                  marginLeft: '4px',
-                  zIndex: 100
-                }}
-              >
-                <div
-                  style={{
-                    position: 'relative',
-                    padding: '8px 12px',
-                    borderRadius: '8px',
-                    backgroundColor: '#303A4B',
-                    fontSize: '12px',
+                  <span style={{
+                    fontSize: '11px',
                     fontWeight: 500,
-                    color: '#FFFFFF',
-                    boxShadow: '0 1px 8px rgba(48, 58, 75, 0.08)'
-                  }}
-                >
-                  {category.label}
-                  {/* 왼쪽을 가리키는 꼬리 */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-4px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: 0,
-                      height: 0,
-                      borderTop: '4px solid transparent',
-                      borderBottom: '4px solid transparent',
-                      borderRight: '4px solid #303A4B'
-                    }}
-                  />
-                </div>
-              </div>
-            )
-          ))}
-        </div>
-      </div>
-
-      {/* 메인 컨텐츠 - Flex Layout */}
-      <div className="flex-1 flex items-center" style={{ paddingTop: '88px', paddingBottom: '40px', paddingLeft: '32px', paddingRight: '32px' }}>
-        <div className="w-full h-full flex" style={{ gap: '32px' }}>
-          
-          {/* 좌측: 플로팅 메뉴 + 컨트롤 (고정 width) */}
-          <div className="flex items-center" style={{ paddingLeft: '48px' }}>
-            <div 
-              className="overflow-auto"
-              style={{
-                height: '650px',
-                width: '480px',
-                backgroundColor: '#F7F9FB',
-                border: '1px solid #EDF2F7',
-                borderRadius: '16px',
-                boxShadow: '0 1px 8px rgba(48, 58, 75, 0.08)'
-              }}
-            >
-              <div className="h-full overflow-y-auto" style={{ padding: '0px 32px 32px 32px', position: 'relative' }}>
-                <CustomizeControls 
-                  character={character} 
-                  updateCharacter={updateCharacter}
-                  selectedCategory={selectedCategory}
-                />
-              </div>
+                    color: selectedCategory === category.id ? '#010820' : '#A0AEC0',
+                    textAlign: 'center',
+                    lineHeight: '1.2'
+                  }}>
+                    {category.label}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* 우측: 프리뷰 + 액션 버튼 (flex-1로 남은 공간 차지하며 center) */}
-          <div className="flex-1 flex items-center justify-center">
-            <div className="flex flex-col items-center justify-center">
-              {/* 원형 프리뷰 (540px) */}
-              <div 
-                className="rounded-full flex items-center justify-center mb-6"
-                style={{
-                  width: '540px',
-                  height: '540px',
-                  backgroundColor: '#F7F9FB',
-                  overflow: 'auto',
-                  position: 'relative'
-                }}
-              >
-                <CharacterPreview character={character} size={540} />
-              </div>
-
-              {/* 액션 버튼들 (56px) */}
-              <div className="flex items-center" style={{ gap: '12px' }}>
-                {/* Surprise Me 버튼 */}
-                <div style={{ position: 'relative' }}>
-                  <button
-                    onClick={handleRandomize}
-                    onMouseEnter={() => setIsSurpriseMeHovered(true)}
-                    onMouseLeave={() => setIsSurpriseMeHovered(false)}
-                    className="surprise-me-btn rounded-full transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center"
-                    style={{
-                      paddingTop: '16px',
-                      paddingBottom: '16px',
-                      paddingLeft: '24px',
-                      paddingRight: '24px',
-                      height: '56px',
-                      fontSize: '16px',
-                      lineHeight: '140%',
-                      fontWeight: 600,
-                      backgroundColor: '#FFFFFF',
-                      border: '1px solid #EDF2F7',
-                      color: '#010820',
-                      gap: '8px'
-                    }}
-                  >
-                    <svg 
-                      width="24" 
-                      height="24" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="rotate-on-hover"
-                      style={{ width: '24px', height: '24px', transition: 'transform 0.3s ease' }}
-                    >
-                      <path d="M10.6045 3.87207C11.1042 2.60696 12.8958 2.60696 13.3955 3.87207L15.0605 8.09668C15.1939 8.43471 15.4452 8.71098 15.7646 8.87695L15.9062 8.94141L20.1299 10.6074C21.3951 11.1072 21.3951 12.8978 20.1299 13.3975L15.9062 15.0635C15.5197 15.2159 15.213 15.5216 15.0605 15.9082L13.3955 20.1318C12.9269 21.3182 11.3229 21.3922 10.7129 20.3535L10.6045 20.1318L8.93945 15.9082C8.78699 15.5216 8.48034 15.2159 8.09375 15.0635L3.87012 13.3975L3.64844 13.29C2.67874 12.7206 2.67874 11.2843 3.64844 10.7148L3.87012 10.6074L8.09375 8.94141C8.43203 8.80799 8.70901 8.55696 8.875 8.2373L8.93945 8.09668L10.6045 3.87207ZM10.334 8.64648C10.029 9.41949 9.41661 10.032 8.64355 10.3369L4.42188 12.002L8.64355 13.668C9.41672 13.9729 10.029 14.5852 10.334 15.3584L12 19.5801L13.666 15.3584C13.971 14.5852 14.5833 13.9729 15.3564 13.668L19.5781 12.002L15.3564 10.3369C14.5834 10.032 13.971 9.41949 13.666 8.64648L12 4.4248L10.334 8.64648Z" fill="#010820"/>
-                    </svg>
-                    Surprise Me
-                  </button>
-                  
-                  {/* Surprise Me Tooltip */}
-                  {isSurpriseMeHovered && (
-                    <div
-                      className="absolute bottom-full left-1/2 whitespace-nowrap pointer-events-none"
-                      style={{
-                        transform: 'translate(-50%, -8px)',
-                        marginBottom: '4px',
-                        zIndex: 100
-                      }}
-                    >
-                      <div
-                        style={{
-                          position: 'relative',
-                          padding: '8px 12px',
-                          borderRadius: '8px',
-                          backgroundColor: '#303A4B',
-                          fontSize: '12px',
-                          fontWeight: 500,
-                          color: '#FFFFFF',
-                          boxShadow: '0 1px 8px rgba(48, 58, 75, 0.08)'
-                        }}
-                      >
-                        Randomize avatar
-                        {/* 아래쪽을 가리키는 꼬리 */}
-                        <div
-                          style={{
-                            position: 'absolute',
-                            bottom: '-4px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            width: 0,
-                            height: 0,
-                            borderLeft: '4px solid transparent',
-                            borderRight: '4px solid transparent',
-                            borderTop: '4px solid #303A4B'
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Reset 버튼 (아이콘만) */}
-                <div style={{ position: 'relative' }}>
-                  <button
-                    onClick={handleReset}
-                    onMouseEnter={() => setIsResetHovered(true)}
-                    onMouseLeave={() => setIsResetHovered(false)}
-                    className="reset-btn rounded-full transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center"
-                    style={{
-                      width: '56px',
-                      height: '56px',
-                      backgroundColor: '#FFFFFF',
-                      border: '1px solid #EDF2F7'
-                    }}
-                  >
-                    <svg 
-                      width="24" 
-                      height="24" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="rotate-on-hover"
-                      style={{ width: '24px', height: '24px', transition: 'transform 0.3s ease' }}
-                    >
-                      <path d="M3.75 11.25C4.16421 11.25 4.5 11.5858 4.5 12C4.5 16.1421 7.85786 19.5 12 19.5C14.4515 19.5 16.6268 18.3229 17.9951 16.5039H16.0068C15.5927 16.5038 15.2569 16.168 15.2568 15.7539C15.2569 15.3398 15.5927 15.004 16.0068 15.0039H20.25C20.664 15.0041 20.999 15.3399 20.999 15.7539V19.9961C20.999 20.4102 20.664 20.7459 20.25 20.7461C19.8358 20.7461 19.5 20.4103 19.5 19.9961V16.9727C17.8881 19.3994 15.1317 21 12 21C7.02944 21 3 16.9706 3 12C3 11.5858 3.33579 11.25 3.75 11.25ZM12 3C16.9706 3 21 7.02944 21 12C21 12.4142 20.6642 12.75 20.25 12.75C19.8358 12.75 19.5 12.4142 19.5 12C19.5 7.85786 16.1421 4.5 12 4.5C9.54851 4.5 7.37322 5.67714 6.00488 7.49609H7.99316C8.40728 7.49617 8.7431 7.83198 8.74316 8.24609C8.74314 8.66024 8.4073 8.99602 7.99316 8.99609H3.75C3.336 8.99586 3.001 8.66014 3.00098 8.24609V4.00391C3.00098 3.58984 3.33599 3.25414 3.75 3.25391C4.16419 3.25393 4.5 3.58971 4.5 4.00391V7.02734C6.11191 4.60056 8.86829 3 12 3Z" fill="#010820"/>
-                    </svg>
-                  </button>
-                  
-                  {/* Reset Tooltip */}
-                  {isResetHovered && (
-                    <div
-                      className="absolute bottom-full left-1/2 whitespace-nowrap pointer-events-none"
-                      style={{
-                        transform: 'translate(-50%, -8px)',
-                        marginBottom: '4px',
-                        zIndex: 100
-                      }}
-                    >
-                      <div
-                        style={{
-                          position: 'relative',
-                          padding: '8px 12px',
-                          borderRadius: '8px',
-                          backgroundColor: '#303A4B',
-                          fontSize: '12px',
-                          fontWeight: 500,
-                          color: '#FFFFFF',
-                          boxShadow: '0 1px 8px rgba(48, 58, 75, 0.08)'
-                        }}
-                      >
-                        Reset
-                        {/* 아래쪽을 가리키는 꼬리 */}
-                        <div
-                          style={{
-                            position: 'absolute',
-                            bottom: '-4px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            width: 0,
-                            height: 0,
-                            borderLeft: '4px solid transparent',
-                            borderRight: '4px solid transparent',
-                            borderTop: '4px solid #303A4B'
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+          {/* 컨트롤 패널 */}
+          <div 
+            className="flex-1 overflow-auto"
+            style={{
+              backgroundColor: '#F7F9FB',
+              border: '1px solid #EDF2F7',
+              borderRadius: '16px',
+              boxShadow: '0 1px 8px rgba(48, 58, 75, 0.08)',
+              padding: '20px',
+              marginBottom: '16px'
+            }}
+          >
+            <CustomizeControls 
+              character={character} 
+              updateCharacter={updateCharacter}
+              selectedCategory={selectedCategory}
+            />
           </div>
         </div>
       </div>
