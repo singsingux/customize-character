@@ -1,0 +1,190 @@
+# RULES: REDROB Custom Character Creator Web App
+
+## GENERAL
+- Build a web app that allows users to create custom character avatars.
+- Reference visual/UX behavior from https://faces.notion.com/.
+- Use React or Next.js unless otherwise specified.
+- Use SVG or Canvas layers for rendering.
+
+## MAIN PAGE REQUIREMENTS
+- On load: generate a random characters preview.
+- 3 rows of randomly created characters in a infinite carousel. Each row should have different speed settings and should have different start position.
+- Provide a CTA: “시작하기 +”.
+
+## CUSTOMIZE PAGE LAYOUT
+- Left panel: customization controls with lists of categories: skin tone, eyes, nose, mouth, hair, accessories. Takes 5 columns out of 12 column grid system.
+- Right: real-time preview (round shape in 540px size) that takes 7 columns out of 12 column grid system. Below a preview, two action buttons (56px): Surprise Me which is a button that randomize characters, and reset button in round icon button that resets everything.
+
+
+## CUSTOMIZATION CONTROLS
+All components must support:
+- Color picker
+- Size slider
+- X/Y position adjustment
+- Variant/style selection
+
+Components:
+- Face: color, contour style.
+- Hair: style, color.
+- Eyes: style, color, size, spacing slider, rotation slider.
+- Nose: size, position.
+- Mouth: style, size.
+- Background: solid/gradient/pattern.
+
+## PREVIEW REQUIREMENTS
+- All changes must update preview instantly.
+- Preview must support responsive layout.
+- (Optional) zoom controls.
+
+## ACTION BUTTONS
+- Reset: resets current element.
+- Randomize: randomizes all or selected attributes.
+- Download PNG:
+  - Export 1024×1024 PNG.
+  - Option: include or exclude background.
+  - Filename: REDROB_avatar_[timestamp].png.
+
+## TECHNICAL NOTES
+- Use layered rendering (SVG or Canvas).
+- For PNG export: compose layers → `toDataURL()` → download.
+- Maintain clean component structure: one component per attribute category.
+- Ensure attributes are JSON-configurable for future algorithmic randomization.
+
+## FUTURE-READY (OPTIONAL)
+- User login + save/load presets.
+- Animation support.
+- Shareable links for generated avatars.
+
+
+## TYPOGRAPHY SYSTEM
+
+- Use "Pretendard" as the primary font family across the entire product.
+- Do not introduce additional font families.
+- Maintain consistent typographic hierarchy using predefined text styles only.
+
+### TEXT STYLES
+
+Headings:
+- Heading 1: 
+  - Font size: 48px
+  - Line height: 120%
+  - Letter spacing: -2%
+  - Font weight: 700
+- Heading 2:
+  - Font size: 32px
+  - Line height: 120%
+  - Letter spacing: -2%
+  - Font weight: 700
+- Heading 3:
+  - Font size: 24px
+  - Line height: 120%
+  - Letter spacing: -2%
+  - Font weight: 700
+- Heading 4:
+  - Font size: 18px
+  - Line height: 120%
+  - Letter spacing: -2%
+  - Font weight: 700
+
+Body:
+- Body 1:
+  - Font size: 16px
+  - Line height: 130%
+  - Font weight: 400, 500, 600
+- Body 2:
+  - Font size: 14px
+  - Line height: 140%
+  - Font weight: 400, 500, 600
+
+Caption:
+- Font size: 12px
+- Line height: 130%
+- Font weight: 400, 500
+
+Buttons:
+- Button 1:
+  - Font size: 16px
+  - Line height: 140%
+  - Font weight: 600
+- Button 2:
+  - Font size: 14px
+  - Line height: 140%
+  - Font weight: 600
+
+Links:
+- Link 1:
+  - Font size: 14px
+  - Line height: 130%
+  - Font weight: 500
+- Link 2:
+  - Font size: 12px
+  - Line height: 130%
+  - Font weight: 500
+
+Rules:
+- Heading styles must always use font-weight 700.
+- Do not mix heading and body styles.
+- Avoid custom font sizes outside defined system.
+
+---
+
+## COLOR SYSTEM
+
+- All colors must be derived from Base Colors only.
+- Do not introduce arbitrary hex values.
+- Semantic colors (primary, background, text, border) must map to base colors.
+
+### BASE COLOR PALETTES
+
+Blue:
+- blue-50  #E5EFFF
+- blue-100 #B2D1FF
+- blue-200 #7FB2FF
+- blue-300 #66A3FF
+- blue-400 #3385FF
+- blue-500 #0066FF
+- blue-600 #0052CC
+- blue-700 #003D99
+- blue-800 #002966
+- blue-900 #02224F
+
+Purple:
+- purple-50  #F2E9FF
+- purple-100 #E5D3FF
+- purple-200 #CBA7FF
+- purple-300 #B07CFF
+- purple-400 #9650FF
+- purple-500 #7C24FF
+- purple-600 #651BD3
+- purple-700 #4E12A8
+- purple-800 #36097D
+- purple-900 #1F0051
+
+Gray:
+- gray-0   #FFFFFF
+- gray-50  #FCFDFE
+- gray-100 #F7F9FB
+- gray-200 #EDF2F7
+- gray-300 #E2E8F0
+- gray-400 #CBD5E0
+- gray-500 #A0AEC0
+- gray-600 #718096
+- gray-700 #4A5568
+- gray-800 #303A4B
+- gray-900 #010820
+
+---
+
+## COLOR USAGE RULES
+
+- Primary Button: gray-900
+- Primary button hover and active states: gray-800 and gray-700
+- Background default: gray-0
+- Primary text: gray-900
+- Secondary text: gray-600
+- Disabled states: gray-400
+
+Rules:
+- Maintain sufficient contrast for readability.
+- Avoid using high-saturation colors for large background areas.
+- Use neutral grays for UI structure, colors for emphasis only.

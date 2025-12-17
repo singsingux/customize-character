@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  min-height: 100vh;
+}
+
+/* 네비게이션 애니메이션 */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes fadeInSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 무한 배너 애니메이션 */
+@keyframes scroll-banner {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* 페이지 전환 애니메이션 */
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-80px);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.exit-up {
+  animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+.exit-down {
+  animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+/* 버튼 아이콘 회전 효과 */
+.surprise-me-btn:hover .rotate-on-hover,
+.reset-btn:hover .rotate-on-hover {
+  transform: rotate(180deg);
+}
+
+/* 슬라이더 스타일 */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 12px;
+  background: #EDF2F7; /* gray-200 */
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  display: block;
+  vertical-align: middle;
+}
+
+/* Track - Webkit browsers (Chrome, Safari) */
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12px;
+  background: #EDF2F7; /* gray-200 */
+  border-radius: 6px;
+}
+
+/* Track - Firefox */
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 12px;
+  background: #EDF2F7; /* gray-200 */
+  border-radius: 6px;
+}
+
+/* Thumb - Webkit browsers (Chrome, Safari) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #FFFFFF;
+  border: 1px solid #3B82F6; /* blue-500 */
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 8px rgba(48, 58, 75, 0.16);
+  margin-top: -4px; /* Center the thumb */
+}
+
+/* Thumb - Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #FFFFFF;
+  border: 1px solid #3B82F6; /* blue-500 */
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 8px rgba(48, 58, 75, 0.16);
+}
+
+/* Progress fill - Webkit (Chrome, Safari) */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #3B82F6 0%, #3B82F6 var(--range-progress, 0%), #EDF2F7 var(--range-progress, 0%), #EDF2F7 100%);
+}
+
+/* Progress fill - Firefox */
+input[type="range"]::-moz-range-progress {
+  background: #3B82F6; /* blue-500 */
+  height: 12px;
+  border-radius: 6px;
+}
+
+/* 가로 스크롤바 숨기기 */
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontal-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 얇은 가로 스크롤바 표시 */
+.horizontal-scroll-thin {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.horizontal-scroll-thin::-webkit-scrollbar {
+  height: 2px;
+}
+
+.horizontal-scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.horizontal-scroll-thin::-webkit-scrollbar-thumb {
+  background: #CBD5E0;
+  border-radius: 2px;
+}
+
+.horizontal-scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: #A0AEC0;
+}
+
+.horizontal-scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #CBD5E0 transparent;
+}
+
