@@ -692,11 +692,18 @@ export default function CustomizePage() {
 
         {/* 컨트롤 패널 */}
         <div 
-          className="flex-1 overflow-auto"
+          className="flex-1 mobile-controls-panel"
           style={{
             backgroundColor: '#F7F9FB',
             borderTop: '1px solid #EDF2F7',
             padding: '24px',
+            paddingBottom: '60px',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            WebkitOverflowScrolling: 'touch',
+            touchAction: 'pan-y',
+            minHeight: 0,
+            flex: '1 1 auto',
           }}
         >
           <CustomizeControls 

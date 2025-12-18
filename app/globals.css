@@ -49,6 +49,29 @@ body {
     height: -webkit-fill-available;
     overflow: hidden;
   }
+  
+  /* 모바일 컨트롤 패널 스크롤 허용 */
+  .mobile-controls-panel {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior-y: contain !important;
+  }
+  
+  /* 스크롤바 스타일 (선택사항) */
+  .mobile-controls-panel::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .mobile-controls-panel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .mobile-controls-panel::-webkit-scrollbar-thumb {
+    background: rgba(160, 174, 192, 0.3);
+    border-radius: 2px;
+  }
 }
 
 /* 네비게이션 애니메이션 */
