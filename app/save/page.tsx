@@ -317,17 +317,7 @@ function SavePageContent() {
         }
       }
 
-      // Layer 7: Accessories
-      if (character.accessories.headwear.itemId) {
-        try {
-          const y = center - baseSize / 2 + (character.accessories.headwear.position.y * scale);
-          const img = await loadImage(`/headwear-item-${character.accessories.headwear.itemId}.svg`);
-          ctx.drawImage(img, center - baseSize / 2, y, baseSize, baseSize);
-          console.log('Drew: headwear');
-        } catch (error) {
-          console.error('Failed: headwear', error);
-        }
-      }
+      // Layer 7: Accessories (렌더링 순서: Eyewear -> Piercings -> Headwear)
       if (character.accessories.eyewear.itemId) {
         try {
           const y = center - baseSize / 2 + (character.accessories.eyewear.position.y * scale);
@@ -346,6 +336,16 @@ function SavePageContent() {
           console.log('Drew: piercings');
         } catch (error) {
           console.error('Failed: piercings', error);
+        }
+      }
+      if (character.accessories.headwear.itemId) {
+        try {
+          const y = center - baseSize / 2 + (character.accessories.headwear.position.y * scale);
+          const img = await loadImage(`/headwear-item-${character.accessories.headwear.itemId}.svg`);
+          ctx.drawImage(img, center - baseSize / 2, y, baseSize, baseSize);
+          console.log('Drew: headwear');
+        } catch (error) {
+          console.error('Failed: headwear', error);
         }
       }
 

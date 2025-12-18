@@ -363,25 +363,7 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
     
     const allAccessories = [];
     
-    // Headwear
-    if (character.accessories?.headwear?.itemId) {
-      const adjustedX = centerX - baseSize / 2;
-      const adjustedY = centerY - baseSize / 2 + (character.accessories.headwear.position?.y || 0);
-      
-      allAccessories.push(
-        <image
-          key="headwear"
-          href={`/headwear-item-${character.accessories.headwear.itemId}.svg`}
-          x={adjustedX}
-          y={adjustedY}
-          width={baseSize}
-          height={baseSize}
-          preserveAspectRatio="xMidYMid meet"
-        />
-      );
-    }
-    
-    // Eyewear
+    // Eyewear (가장 먼저 렌더링 - 가장 아래 레이어)
     if (character.accessories?.eyewear?.itemId) {
       const adjustedX = centerX - baseSize / 2;
       const adjustedY = centerY - baseSize / 2 + (character.accessories.eyewear.position?.y || 0);
@@ -399,7 +381,7 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
       );
     }
     
-    // Piercings
+    // Piercings (중간 레이어)
     if (character.accessories?.piercings?.itemId) {
       const adjustedX = centerX - baseSize / 2;
       const adjustedY = centerY - baseSize / 2 + (character.accessories.piercings.position?.y || 0);
@@ -408,6 +390,24 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
         <image
           key="piercings"
           href={`/piercings-item-${character.accessories.piercings.itemId}.svg`}
+          x={adjustedX}
+          y={adjustedY}
+          width={baseSize}
+          height={baseSize}
+          preserveAspectRatio="xMidYMid meet"
+        />
+      );
+    }
+    
+    // Headwear (가장 마지막 렌더링 - 가장 위 레이어)
+    if (character.accessories?.headwear?.itemId) {
+      const adjustedX = centerX - baseSize / 2;
+      const adjustedY = centerY - baseSize / 2 + (character.accessories.headwear.position?.y || 0);
+      
+      allAccessories.push(
+        <image
+          key="headwear"
+          href={`/headwear-item-${character.accessories.headwear.itemId}.svg`}
           x={adjustedX}
           y={adjustedY}
           width={baseSize}
