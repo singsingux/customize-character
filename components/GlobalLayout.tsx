@@ -377,20 +377,22 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
         </div>
       )}
 
-      {/* 푸터 - 전체 페이지 고정 (모바일 커스터마이징 페이지에서는 숨김) */}
-      <div 
-        className={`text-center pb-4 fixed bottom-0 left-0 right-0 z-50 ${isCustomizePage ? 'hidden lg:block' : ''}`}
-        style={{
-          fontSize: '12px',
-          lineHeight: '130%',
-          fontWeight: 400,
-          color: '#A0AEC0',
-          backgroundColor: 'transparent',
-          paddingTop: (isMainPage && isMobile) ? '16px' : '0'
-        }}
-      >
-        © 2025. Redrob. All rights reserved.
-      </div>
+      {/* 푸터 - 메인 페이지에만 표시 */}
+      {isMainPage && (
+        <div 
+          className="text-center pb-4 fixed bottom-0 left-0 right-0 z-50"
+          style={{
+            fontSize: '12px',
+            lineHeight: '130%',
+            fontWeight: 400,
+            color: '#A0AEC0',
+            backgroundColor: 'transparent',
+            paddingTop: isMobile ? '16px' : '0'
+          }}
+        >
+          © 2025. Redrob. All rights reserved.
+        </div>
+      )}
 
       {/* 페이지 컨텐츠 */}
       {children}
