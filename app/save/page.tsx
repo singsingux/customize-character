@@ -352,48 +352,37 @@ function SavePageContent() {
       ctx.restore();
 
       // 3. PNG로 다운로드
-      // iOS/모바일 Safari 감지
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-      const isIOSSafari = isIOS || (isSafari && 'ontouchstart' in window);
-      
-      if (isIOSSafari) {
-        // iOS Safari/모바일: toDataURL 사용 + <a> 태그로 새 탭에서 열기 (팝업 차단 회피)
-        try {
-          const dataUrl = canvas.toDataURL('image/png', 1.0);
+      canvas.toBlob((blob) => {
+        if (blob) {
           const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
           const filename = `REDROB_avatar_${timestamp}.png`;
           
-          // <a> 태그 생성하여 새 탭에서 열기 (팝업 차단 회피)
-          const link = document.createElement('a');
-          link.href = dataUrl;
-          link.target = '_blank';
-          link.rel = 'noopener noreferrer';
+          // iOS Safari 감지
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
           
-          // iOS에서는 download 속성이 작동하지 않으므로 새 탭에서 열고 수동 저장
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          
-          // 사용자에게 안내 메시지
-          setTimeout(() => {
-            alert('새 탭에서 이미지를 길게 눌러서 저장해주세요.\n\nLong press the image in the new tab to save.');
-          }, 500);
-          
-          console.log('Opened in new tab for iOS/mobile!');
-        } catch (error) {
-          console.error('Failed to create data URL:', error);
-          alert('이미지 생성에 실패했습니다.');
-        }
-      } else {
-        // 기타 브라우저: toBlob 사용 (자동 다운로드)
-        canvas.toBlob((blob) => {
-          if (blob) {
+          if (isIOS) {
+            // iOS: toBlob 사용 + download 속성 시도
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
             link.href = url;
-            link.download = `REDROB_avatar_${timestamp}.png`;
+            link.download = filename;
+            
+            // iOS 13+ 에서 download 속성 지원
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            setTimeout(() => {
+              URL.revokeObjectURL(url);
+            }, 100);
+            
+            console.log('Downloaded on iOS!');
+          } else {
+            // 기타 브라우저: 기존 방식
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
             document.body.appendChild(link);
             
             setTimeout(() => {
@@ -405,11 +394,11 @@ function SavePageContent() {
             }, 0);
             
             console.log('Downloaded!');
-          } else {
-            alert('PNG 생성에 실패했습니다.');
           }
-        }, 'image/png');
-      }
+        } else {
+          alert('PNG 생성에 실패했습니다.');
+        }
+      }, 'image/png');
     } catch (error) {
       console.error('Download failed:', error);
       alert(`다운로드 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
