@@ -533,9 +533,13 @@ export default function CustomizePage() {
       <div 
         className="lg:hidden flex flex-col" 
         style={{ 
-          height: '100vh',
-          maxHeight: '-webkit-fill-available',
-          paddingTop: '72px' 
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          paddingTop: '72px',
+          overflow: 'hidden'
         }}
       >
         {/* 상단: 프리뷰 영역 */}
@@ -719,14 +723,13 @@ export default function CustomizePage() {
             backgroundColor: '#F7F9FB',
             borderTop: '1px solid #EDF2F7',
             padding: '24px',
-            paddingBottom: '80px',
+            paddingBottom: 'calc(80px + env(safe-area-inset-bottom))',
             overflowY: 'auto',
             overflowX: 'hidden',
             WebkitOverflowScrolling: 'touch',
             touchAction: 'pan-y',
-            flex: '1 1 0',
+            flex: '1 1 auto',
             minHeight: 0,
-            height: 0,
           }}
         >
           <CustomizeControls 
