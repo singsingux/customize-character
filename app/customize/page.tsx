@@ -539,23 +539,37 @@ export default function CustomizePage() {
         }}
       >
         {/* 상단: 프리뷰 영역 */}
-        <div className="flex items-center justify-center" style={{ padding: '24px 24px 16px 24px' }}>
+        <div 
+          className="flex items-center justify-center" 
+          style={{ 
+            padding: '16px 24px 12px 24px',
+            flexShrink: 0 
+          }}
+        >
           <div 
             className="rounded-full flex items-center justify-center"
             style={{
-              width: 'min(280px, 70vw)',
-              height: 'min(280px, 70vw)',
+              width: 'min(240px, 60vw)',
+              height: 'min(240px, 60vw)',
               backgroundColor: '#F7F9FB',
               overflow: 'hidden',
               position: 'relative'
             }}
           >
-            <CharacterPreview character={character} size={280} />
+            <CharacterPreview character={character} size={240} />
           </div>
         </div>
 
         {/* 액션 버튼들 */}
-        <div className="mobile-actions-container" style={{ paddingBottom: '16px', paddingLeft: '24px', paddingRight: '24px' }}>
+        <div 
+          className="mobile-actions-container" 
+          style={{ 
+            paddingBottom: '12px', 
+            paddingLeft: '24px', 
+            paddingRight: '24px',
+            flexShrink: 0 
+          }}
+        >
           {/* 좌측/중앙: Surprise Me + Reset 버튼 */}
           <div className="flex items-center" style={{ gap: '10px' }}>
             {/* Surprise Me 버튼 */}
@@ -641,7 +655,15 @@ export default function CustomizePage() {
         </div>
 
         {/* 하단: 카테고리 메뉴 (화면 너비에 맞게) */}
-        <div className="w-full" style={{ paddingLeft: '24px', paddingRight: '24px', paddingBottom: '12px' }}>
+        <div 
+          className="w-full" 
+          style={{ 
+            paddingLeft: '24px', 
+            paddingRight: '24px', 
+            paddingBottom: '12px',
+            flexShrink: 0 
+          }}
+        >
           <div className="grid grid-cols-7 gap-2">
             {categories.map((category) => (
               <button
@@ -692,18 +714,19 @@ export default function CustomizePage() {
 
         {/* 컨트롤 패널 */}
         <div 
-          className="flex-1 mobile-controls-panel"
+          className="mobile-controls-panel"
           style={{
             backgroundColor: '#F7F9FB',
             borderTop: '1px solid #EDF2F7',
             padding: '24px',
-            paddingBottom: '60px',
+            paddingBottom: '80px',
             overflowY: 'auto',
             overflowX: 'hidden',
             WebkitOverflowScrolling: 'touch',
             touchAction: 'pan-y',
+            flex: '1 1 0',
             minHeight: 0,
-            flex: '1 1 auto',
+            height: 0,
           }}
         >
           <CustomizeControls 
