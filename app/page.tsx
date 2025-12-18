@@ -39,6 +39,7 @@ export default function Home() {
   return (
     <main 
       className="h-screen flex flex-col overflow-hidden relative fade-in"
+      style={{ height: '100vh' }}
     >
       {/* 중앙 컨텐츠 */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-8 relative z-10" style={{ paddingTop: '88px' }}>
@@ -113,13 +114,13 @@ export default function Home() {
                 key={index} 
                 className="flex-shrink-0 rounded-full flex items-center justify-center"
                 style={{ 
-                  width: isMobile ? '150px' : '300px', 
-                  height: isMobile ? '150px' : '300px',
+                  width: isMobile ? '200px' : '300px', 
+                  height: isMobile ? '200px' : '300px',
                   backgroundColor: character.background.color,
                   overflow: 'hidden'
                 }}
               >
-                <CharacterPreview character={character} size={isMobile ? 150 : 300} />
+                <CharacterPreview character={character} size={isMobile ? 200 : 300} />
               </div>
             ))}
           </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import CharacterPreview from '@/components/CharacterPreview';
 import { CharacterAttributes } from '@/types/character';
 import { DEFAULT_CHARACTER } from '@/lib/constants';
@@ -26,10 +26,14 @@ const BACKGROUND_PATTERNS = [
 
 function SavePageContent() {
   const router = useRouter();
+  const pathname = usePathname();
   const [character, setCharacter] = useState<CharacterAttributes>(DEFAULT_CHARACTER);
   const [selectedBackground, setSelectedBackground] = useState<string>('#FFFFFF');
   const [selectedPattern, setSelectedPattern] = useState<string | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     // localStorage에서 캐릭터 데이터 가져오기
@@ -37,7 +41,34 @@ function SavePageContent() {
     if (savedCharacter) {
       setCharacter(JSON.parse(savedCharacter));
     }
+
+    // 화면 크기 감지
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 680);
+      setIsTablet(window.innerWidth >= 681 && window.innerWidth <= 1023);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // 메뉴 외부 클릭 시 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isMenuOpen && !(event.target as Element).closest('.save-hamburger-menu')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen]);
+
+  const handleNavigation = (path: string) => {
+    if (pathname === path) return;
+    router.push(path);
+  };
 
   const handleGoBack = () => {
     // 현재 캐릭터 상태를 localStorage에 저장하고 돌아가기
@@ -350,54 +381,165 @@ function SavePageContent() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        height: '100vh',
         minHeight: '100vh',
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {/* 좌측 뒤로가기 버튼 - nav와 같은 높이 */}
-      <button
-        onClick={handleGoBack}
-        className="text-sm sm:text-base"
+      {/* 상단 네비게이션 */}
+      <div 
+        className="save-hamburger-menu"
         style={{
           position: 'fixed',
-          left: '16px',
+          left: '24px',
+          right: '24px',
           top: '16px',
-          height: '40px',
           display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          gap: '6px',
-          paddingLeft: '12px',
-          paddingRight: '16px',
-          backgroundColor: '#FFFFFF',
-          border: '1px solid #EDF2F7',
-          borderRadius: '100px',
-          fontWeight: 500,
-          color: '#010820',
-          cursor: 'pointer',
-          boxShadow: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
-          transition: 'background-color 0.2s cubic-bezier(0.4, 0, 0.6, 1)',
           zIndex: 50,
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = '#F7F9FB';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = '#FFFFFF';
-        }}
       >
-        <Image
-          src="/caret-left.svg"
-          alt="back"
-          width={20}
-          height={20}
-          style={{ width: '20px', height: '20px' }}
-        />
-        Edit
-      </button>
+        {/* 좌측: Edit 버튼 */}
+        <button
+          onClick={handleGoBack}
+          className="save-edit-btn"
+          style={{
+            height: '48px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            backgroundColor: '#FFFFFF',
+            border: '1px solid #EDF2F7',
+            borderRadius: '100px',
+            fontWeight: 600,
+            fontSize: '14px',
+            color: '#010820',
+            cursor: 'pointer',
+            boxShadow: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
+            transition: 'background-color 0.2s cubic-bezier(0.4, 0, 0.6, 1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#F7F9FB';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#FFFFFF';
+          }}
+        >
+          <Image
+            src="/caret-left.svg"
+            alt="back"
+            width={24}
+            height={24}
+            className="edit-icon"
+            style={{ width: '20px', height: '20px' }}
+          />
+          <span className="edit-text">Edit</span>
+        </button>
+
+        {/* 우측: 햄버거 메뉴 (모바일만) - 숨김 처리 */}
+        {false && isSmallScreen && (
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="rounded-full flex items-center justify-center"
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #EDF2F7',
+                boxShadow: '0 1px 8px rgba(48, 58, 75, 0.08)',
+                height: '48px',
+                width: '48px',
+                cursor: 'pointer'
+              }}
+            >
+              <Image
+                src="/menu-line.svg"
+                alt="Menu"
+                width={24}
+                height={24}
+                style={{ width: '24px', height: '24px' }}
+              />
+            </button>
+
+            {/* 드롭다운 메뉴 */}
+            {isMenuOpen && (
+              <div 
+                className="mt-2 rounded-2xl"
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  top: '100%',
+                  marginTop: '8px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #EDF2F7',
+                  boxShadow: '0 4px 16px rgba(48, 58, 75, 0.12)',
+                  overflow: 'hidden',
+                  minWidth: '200px'
+                }}
+              >
+                <button
+                  onClick={() => {
+                    handleNavigation('/');
+                    setIsMenuOpen(false);
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '16px',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: pathname === '/' ? '#010820' : '#A0AEC0',
+                    backgroundColor: pathname === '/' ? '#F7F9FB' : 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    borderBottom: '1px solid #EDF2F7'
+                  }}
+                >
+                  Main
+                </button>
+                <button
+                  onClick={() => {
+                    handleNavigation('/customize');
+                    setIsMenuOpen(false);
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '16px',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: pathname === '/customize' ? '#010820' : '#A0AEC0',
+                    backgroundColor: pathname === '/customize' ? '#F7F9FB' : 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    borderBottom: '1px solid #EDF2F7'
+                  }}
+                >
+                  Create
+                </button>
+                <div
+                  style={{
+                    width: '100%',
+                    padding: '16px',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: '#CBD5E0',
+                    cursor: 'not-allowed',
+                    textAlign: 'left'
+                  }}
+                >
+                  Gallery <span style={{ fontSize: '12px', marginLeft: '8px' }}>(In progress...)</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* 중앙 컨테이너 */}
       <div
-        className="w-[90%] sm:w-[680px]"
+        className="save-main-container"
         style={{
           maxWidth: '680px',
           backgroundColor: '#F7F9FB',
@@ -410,8 +552,9 @@ function SavePageContent() {
           alignItems: 'center',
           position: 'absolute',
           top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          left: '24px',
+          right: '24px',
+          transform: 'translateY(-50%)',
         }}
       >
         {/* 타이틀 */}
@@ -429,7 +572,7 @@ function SavePageContent() {
         {/* 캐릭터 프리뷰 */}
         <div
           ref={previewRef}
-          className="w-[250px] h-[250px] sm:w-[300px] sm:h-[300px]"
+          className="save-preview-container"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -473,100 +616,111 @@ function SavePageContent() {
           </svg>
           
           {/* 캐릭터 레이어 */}
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <CharacterPreview character={character} size={300} />
+          <div 
+            className="save-character-layer"
+            style={{ 
+              position: 'relative', 
+              zIndex: 1, 
+              width: '100%',
+              height: '100%',
+              overflow: 'hidden', 
+              borderRadius: '50%' 
+            }}
+          >
+            <CharacterPreview 
+              character={character} 
+              size={isSmallScreen ? 220 : isTablet ? 260 : 300} 
+            />
           </div>
           
           {/* 프레임 레이어 */}
           <Image
             src="/final-preview.svg"
             alt="preview frame"
-            width={302}
-            height={302}
+            width={300}
+            height={300}
+            className="save-preview-frame"
             style={{
               position: 'absolute',
               top: 0,
               left: 0,
-              width: '302px',
-              height: '302px',
+              width: '100%',
+              height: '100%',
               pointerEvents: 'none',
               zIndex: 2,
             }}
           />
         </div>
 
-        {/* 배경색 선택 */}
-        <div style={{ width: '100%', marginBottom: '24px' }}>
-          <div
-            style={{
-              display: 'flex',
-              gap: '24px',
-              justifyContent: 'center',
-            }}
-          >
-            {BACKGROUND_COLORS.map((color) => {
-              const isSelected = selectedBackground === color && !selectedPattern;
-              return (
-                <button
-                  key={color}
-                  onClick={() => {
-                    setSelectedBackground(color);
-                    setSelectedPattern(null);
-                  }}
-                  style={{
-                    width: '80px',
-                    height: '80px',
-                    padding: 0,
-                    border: 'none',
-                    background: 'transparent',
-                    cursor: 'pointer',
-                    position: 'relative',
-                  }}
-                >
-                  {/* 컬러 원형 */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '10px',
-                      left: '10px',
-                      width: '60px',
-                      height: '60px',
-                      borderRadius: '50%',
-                      backgroundColor: color,
-                      zIndex: 1,
+        {/* 배경색 & 패턴 선택 - 모바일에서 합쳐짐 */}
+        <div className="save-swatches-wrapper" style={{ width: '100%', marginBottom: '32px' }}>
+          {/* 배경색 선택 */}
+          <div className="save-swatches-section">
+            <div
+              className="save-bg-swatches save-color-swatches"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              {BACKGROUND_COLORS.map((color) => {
+                const isSelected = selectedBackground === color && !selectedPattern;
+                return (
+                  <button
+                    key={color}
+                    onClick={() => {
+                      setSelectedBackground(color);
+                      setSelectedPattern(null);
                     }}
-                  />
-                  {/* 프레임 */}
-                  <Image
-                    src={isSelected ? '/bg-frame-selected.svg' : '/bg-frame-default.svg'}
-                    alt="frame"
-                    width={80}
-                    height={80}
+                    className="save-swatch-btn"
                     style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '80px',
-                      height: '80px',
-                      pointerEvents: 'none',
-                      zIndex: 2,
+                      padding: 0,
+                      border: 'none',
+                      background: 'transparent',
+                      cursor: 'pointer',
+                      position: 'relative',
                     }}
-                  />
-                </button>
-              );
-            })}
+                  >
+                    {/* 컬러 원형 */}
+                    <div
+                      className="save-swatch-circle"
+                      style={{
+                        position: 'absolute',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        zIndex: 1,
+                      }}
+                    />
+                    {/* 프레임 */}
+                    <Image
+                      src={isSelected ? '/bg-frame-selected.svg' : '/bg-frame-default.svg'}
+                      alt="frame"
+                      width={80}
+                      height={80}
+                      className="save-swatch-frame"
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        pointerEvents: 'none',
+                        zIndex: 2,
+                      }}
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
 
-        {/* 패턴 선택 */}
-        <div style={{ width: '100%', marginBottom: '32px' }}>
-          <div
-            style={{
-              display: 'flex',
-              gap: '24px',
-              justifyContent: 'center',
-            }}
-          >
+          {/* 패턴 선택 */}
+          <div className="save-swatches-section">
+            <div
+              className="save-bg-swatches save-pattern-swatches"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
             {BACKGROUND_PATTERNS.map((pattern, index) => {
               const isSelected = selectedPattern === pattern.id;
               return (
@@ -575,9 +729,8 @@ function SavePageContent() {
                   onClick={() => {
                     setSelectedPattern(pattern.id);
                   }}
+                  className="save-swatch-btn"
                   style={{
-                    width: '80px',
-                    height: '80px',
                     padding: 0,
                     border: 'none',
                     background: 'transparent',
@@ -591,12 +744,11 @@ function SavePageContent() {
                     alt="frame"
                     width={80}
                     height={80}
+                    className="save-swatch-frame"
                     style={{
                       position: 'absolute',
                       top: 0,
                       left: 0,
-                      width: '80px',
-                      height: '80px',
                       pointerEvents: 'none',
                       zIndex: 2,
                     }}
@@ -607,12 +759,9 @@ function SavePageContent() {
                     alt={pattern.name}
                     width={60}
                     height={60}
+                    className="save-swatch-circle"
                     style={{
                       position: 'absolute',
-                      top: '10px',
-                      left: '10px',
-                      width: '60px',
-                      height: '60px',
                       borderRadius: '50%',
                       objectFit: 'cover',
                       zIndex: 1,
@@ -623,9 +772,11 @@ function SavePageContent() {
             })}
           </div>
         </div>
+      </div>
 
         {/* 하단 버튼들 */}
         <div
+          className="save-buttons-container"
           style={{
             display: 'flex',
             gap: '12px',
@@ -650,7 +801,7 @@ function SavePageContent() {
               border: '1px solid #EDF2F7',
               borderRadius: '100px',
               fontSize: '16px',
-              fontWeight: 500,
+              fontWeight: 600,
               color: '#010820',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
@@ -686,7 +837,7 @@ function SavePageContent() {
               border: 'none',
               borderRadius: '100px',
               fontSize: '16px',
-              fontWeight: 500,
+              fontWeight: 600,
               color: '#FFFFFF',
               cursor: 'pointer',
               transition: 'all 0.2s ease',

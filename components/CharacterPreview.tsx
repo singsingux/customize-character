@@ -14,6 +14,11 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
   const [coloredEyesSvg, setColoredEyesSvg] = useState<string>('');
   const [coloredLeftEyeSvg, setColoredLeftEyeSvg] = useState<string>('');
   const [coloredRightEyeSvg, setColoredRightEyeSvg] = useState<string>('');
+  
+  // 고유한 clipPath ID 생성 (모바일 브라우저 호환성)
+  const clipId = `clip-${size}`;
+  const leftEyeClipId = `leftEye-${size}`;
+  const rightEyeClipId = `rightEye-${size}`;
 
   // Hair SVG 색상 변경 (gradient 지원)
   useEffect(() => {
@@ -199,7 +204,7 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
         return (
           <>
             {/* 왼쪽 눈 - 왼쪽 절반만 보이게 */}
-            <g clipPath="url(#leftEyeClip)">
+            <g clipPath={`url(#${leftEyeClipId})`}>
               <image
                 href={coloredLeftEyeSvg}
                 x={leftEyeX}
@@ -210,7 +215,7 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
               />
             </g>
             {/* 오른쪽 눈 - 오른쪽 절반만 보이게 */}
-            <g clipPath="url(#rightEyeClip)">
+            <g clipPath={`url(#${rightEyeClipId})`}>
               <image
                 href={coloredRightEyeSvg}
                 x={rightEyeX}
@@ -227,7 +232,7 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
         return (
           <>
             {/* 왼쪽 눈 - 왼쪽 절반만 보이게 */}
-            <g clipPath="url(#leftEyeClip)">
+            <g clipPath={`url(#${leftEyeClipId})`}>
               <image
                 href={coloredEyesSvg}
                 x={leftEyeX}
@@ -238,7 +243,7 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
               />
             </g>
             {/* 오른쪽 눈 - 오른쪽 절반만 보이게 */}
-            <g clipPath="url(#rightEyeClip)">
+            <g clipPath={`url(#${rightEyeClipId})`}>
               <image
                 href={coloredEyesSvg}
                 x={rightEyeX}
@@ -675,19 +680,19 @@ export default function CharacterPreview({ character, size = 400 }: CharacterPre
       style={{ overflow: 'hidden' }}
     >
       <defs>
-        <clipPath id="preview-clip">
+        <clipPath id={clipId}>
           <circle cx="200" cy="200" r="200" />
         </clipPath>
         {/* Eyes half-half용 clipPath */}
-        <clipPath id="leftEyeClip">
+        <clipPath id={leftEyeClipId}>
           <rect x="0" y="0" width="200" height="400" />
         </clipPath>
-        <clipPath id="rightEyeClip">
+        <clipPath id={rightEyeClipId}>
           <rect x="200" y="0" width="200" height="400" />
         </clipPath>
       </defs>
       
-      <g clipPath="url(#preview-clip)">
+      <g clipPath={`url(#${clipId})`}>
         {/* 레이어 순서 (아래에서 위로) */}
         {/* Layer 1: Skin Tone - 가장 하단 */}
         {renderSkinTone()}

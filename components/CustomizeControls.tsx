@@ -23,12 +23,14 @@ interface CustomizeControlsProps {
   character: CharacterAttributes;
   updateCharacter: (updates: Partial<CharacterAttributes>) => void;
   selectedCategory: Category;
+  isMobile?: boolean;
 }
 
 export default function CustomizeControls({
   character,
   updateCharacter,
   selectedCategory,
+  isMobile = false,
 }: CustomizeControlsProps) {
   const [accessoryFilter, setAccessoryFilter] = useState<AccessoryFilter>('headwear');
 
@@ -64,8 +66,10 @@ export default function CustomizeControls({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 128px)',
-              gap: '16px'
+              gridTemplateColumns: isMobile ? 'repeat(auto-fit, 128px)' : 'repeat(3, 128px)',
+              gap: '16px',
+              width: '100%',
+              justifyContent: 'center'
             }}
           >
             {Array.from({ length: 12 }, (_, index) => {
@@ -175,12 +179,130 @@ export default function CustomizeControls({
             </h3>
           </div>
 
-          {/* Eye Color Presets - 2 rows */}
+          {/* Eye Color Presets - 2 rows (desktop) or 1 row with scroll (mobile) */}
           <div style={{ marginBottom: '24px', width: '100%' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {/* Row 1 - First 8 colors */}
-              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-                {EYE_COLORS.slice(0, 8).map((color, index) => {
+            {isMobile ? (
+              /* Mobile: 1 row with horizontal scroll */
+              <div style={{ 
+                display: 'flex', 
+                gap: '12px', 
+                overflowX: 'auto',
+                overflowY: 'hidden',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              }}
+              className="hide-scrollbar"
+              >
+                {EYE_COLORS.map((color, index) => {
+                  const isSelected = character.eyes.color === color;
+                  const isGradient1 = color === 'gradient1';
+                  const isGradient2 = color === 'gradient2';
+                  return (
+                    <button
+                      key={`eye-${index}`}
+                      onClick={() =>
+                        updateCharacter({
+                          eyes: { ...character.eyes, color },
+                        })
+                      }
+                      className="transition-all duration-200"
+                      style={{
+                        width: '42px',
+                        height: '42px',
+                        padding: 0,
+                        border: 'none',
+                        background: 'transparent',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'visible',
+                        flexShrink: 0
+                      }}
+                    >
+                      {/* White background circle */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '5px',
+                          left: '5px',
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          backgroundColor: '#FFFFFF',
+                          zIndex: 0
+                        }}
+                      />
+                      {/* 내부 원형 컬러 (32px) - Half-half or solid */}
+                      {isGradient1 ? (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '5px',
+                            left: '5px',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            overflow: 'hidden',
+                            zIndex: 1
+                          }}
+                        >
+                          <div style={{ width: '50%', height: '100%', backgroundColor: '#36A3FF', float: 'left' }} />
+                          <div style={{ width: '50%', height: '100%', backgroundColor: '#863517', float: 'left' }} />
+                        </div>
+                      ) : isGradient2 ? (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '5px',
+                            left: '5px',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            overflow: 'hidden',
+                            zIndex: 1
+                          }}
+                        >
+                          <div style={{ width: '50%', height: '100%', backgroundColor: '#53BD00', float: 'left' }} />
+                          <div style={{ width: '50%', height: '100%', backgroundColor: '#814813', float: 'left' }} />
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '5px',
+                            left: '5px',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            backgroundColor: color,
+                            zIndex: 1
+                          }}
+                        />
+                      )}
+                      {/* 프레임 */}
+                      <img
+                        src={isSelected ? '/preset-selected.svg' : '/preset-default.svg'}
+                        alt="preset frame"
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '42px',
+                          height: '42px',
+                          pointerEvents: 'none',
+                          zIndex: 2
+                        }}
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              /* Desktop: 2 rows */
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* Row 1 - First 8 colors */}
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                  {EYE_COLORS.slice(0, 8).map((color, index) => {
                   const isSelected = character.eyes.color === color;
                   const isGradient1 = color === 'gradient1';
                   const isGradient2 = color === 'gradient2';
@@ -390,6 +512,7 @@ export default function CustomizeControls({
                 })}
               </div>
             </div>
+            )}
           </div>
 
           {/* Eye Spacing Slider - none이 아닐 때만 표시 */}
@@ -436,9 +559,11 @@ export default function CustomizeControls({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 128px)',
+              gridTemplateColumns: isMobile ? 'repeat(auto-fit, 128px)' : 'repeat(3, 128px)',
               gap: '16px',
-              marginBottom: '32px'
+              marginBottom: '32px',
+              width: '100%',
+              justifyContent: 'center'
             }}
           >
             {/* None 아이템 */}
@@ -640,7 +765,7 @@ export default function CustomizeControls({
                 </div>
 
                 {/* Y Position Slider */}
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '100%', marginBottom: '24px' }}>
                   <label 
                     style={{
                       display: 'block',
@@ -688,9 +813,11 @@ export default function CustomizeControls({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 128px)',
+              gridTemplateColumns: isMobile ? 'repeat(auto-fit, 128px)' : 'repeat(3, 128px)',
               gap: '16px',
-              marginBottom: '32px'
+              marginBottom: '32px',
+              width: '100%',
+              justifyContent: 'center'
             }}
           >
             {/* None 아이템 */}
@@ -894,7 +1021,7 @@ export default function CustomizeControls({
             
 
                 {/* Y Position Slider */}
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '100%', marginBottom: '24px' }}>
                   <label 
                     style={{
                       display: 'block',
@@ -945,9 +1072,11 @@ export default function CustomizeControls({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 128px)',
+              gridTemplateColumns: isMobile ? 'repeat(auto-fit, 128px)' : 'repeat(3, 128px)',
               gap: '16px',
-              marginBottom: '32px'
+              marginBottom: '32px',
+              width: '100%',
+              justifyContent: 'center'
             }}
           >
             {/* None 아이템 */}
@@ -1114,12 +1243,97 @@ export default function CustomizeControls({
             </h3>
           </div>
 
-          {/* Hair Color Presets - 2 rows */}
+          {/* Hair Color Presets - 2 rows (desktop) or 1 row with scroll (mobile) */}
           <div style={{ marginBottom: '24px', width: '100%' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {/* Row 1 - First 8 colors */}
-              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-                {HAIR_COLORS.slice(0, 8).map((color, index) => {
+            {isMobile ? (
+              /* Mobile: 1 row with horizontal scroll */
+              <div style={{ 
+                display: 'flex', 
+                gap: '12px', 
+                overflowX: 'auto',
+                overflowY: 'hidden',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              }}
+              className="hide-scrollbar"
+              >
+                {HAIR_COLORS.map((color, index) => {
+                  const isSelected = character.hair.color === color;
+                  const isGradient = color === 'gradient';
+                  return (
+                    <button
+                      key={`hair-${index}`}
+                      onClick={() =>
+                        updateCharacter({
+                          hair: { ...character.hair, color },
+                        })
+                      }
+                      className="transition-all duration-200"
+                      style={{
+                        width: '42px',
+                        height: '42px',
+                        padding: 0,
+                        border: 'none',
+                        background: 'transparent',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'visible',
+                        flexShrink: 0
+                      }}
+                    >
+                      {/* White background circle */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '5px',
+                          left: '5px',
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          backgroundColor: '#FFFFFF',
+                          zIndex: 0
+                        }}
+                      />
+                      {/* 내부 원형 컬러 (32px) - Gradient or solid */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '5px',
+                          left: '5px',
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          background: isGradient 
+                            ? 'linear-gradient(132deg, #FF1313 5.54%, #FFCD57 34.66%, #89FFAE 59.23%, #6392FF 84.25%, #D5CCFF 100.18%)'
+                            : color,
+                          zIndex: 1
+                        }}
+                      />
+                      {/* 프레임 */}
+                      <img
+                        src={isSelected ? '/preset-selected.svg' : '/preset-default.svg'}
+                        alt="preset frame"
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '42px',
+                          height: '42px',
+                          pointerEvents: 'none',
+                          zIndex: 2
+                        }}
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              /* Desktop: 2 rows */
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* Row 1 - First 8 colors */}
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                  {HAIR_COLORS.slice(0, 8).map((color, index) => {
                   const isSelected = character.hair.color === color;
                   const isGradient = color === 'gradient';
                   return (
@@ -1263,6 +1477,7 @@ export default function CustomizeControls({
                 })}
               </div>
             </div>
+            )}
           </div>
 
           {/* Scrollable Hair Items Container */}
@@ -1278,9 +1493,11 @@ export default function CustomizeControls({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 128px)',
+              gridTemplateColumns: isMobile ? 'repeat(auto-fit, 128px)' : 'repeat(3, 128px)',
               gap: '16px',
-              marginBottom: '32px'
+              marginBottom: '32px',
+              width: '100%',
+              justifyContent: 'center'
             }}
           >
             {/* None 아이템 */}
@@ -1445,8 +1662,10 @@ export default function CustomizeControls({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 128px)',
-              gap: '16px'
+              gridTemplateColumns: isMobile ? 'repeat(auto-fit, 128px)' : 'repeat(3, 128px)',
+              gap: '16px',
+              width: '100%',
+              justifyContent: 'center'
             }}
           >
             {/* None 아이템 */}
@@ -1651,7 +1870,7 @@ export default function CustomizeControls({
             {/* Sliders - 필터별로 조건부 표시 */}
             {/* Headwear Y Position Slider - headwear 필터일 때만 표시 */}
             {character.accessories.headwear.itemId && accessoryFilter === 'headwear' && (
-              <div style={{ width: '100%' }}>
+              <div style={{ width: '100%', marginBottom: '24px' }}>
                 <label 
                   style={{
                     display: 'block',
@@ -1689,7 +1908,7 @@ export default function CustomizeControls({
 
             {/* Eyewear Y Position Slider - eyewear 필터일 때만 표시 */}
             {character.accessories.eyewear.itemId && accessoryFilter === 'eyewear' && (
-              <div style={{ width: '100%' }}>
+              <div style={{ width: '100%', marginBottom: '24px' }}>
                 <label 
                   style={{
                     display: 'block',
@@ -1727,7 +1946,7 @@ export default function CustomizeControls({
 
             {/* Piercings Y Position Slider - piercings 필터 또는 all 필터일 때만 표시 */}
             {character.accessories.piercings.itemId && (accessoryFilter === 'all' || accessoryFilter === 'piercings') && (
-              <div style={{ width: '100%' }}>
+              <div style={{ width: '100%', marginBottom: '24px' }}>
                 <label 
                   style={{
                     display: 'block',
@@ -1794,8 +2013,10 @@ export default function CustomizeControls({
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(3, 128px)',
-                gap: '16px'
+                gridTemplateColumns: isMobile ? 'repeat(auto-fit, 128px)' : 'repeat(3, 128px)',
+                gap: '16px',
+                width: '100%',
+                justifyContent: 'center'
               }}
             >
               {/* None 버튼 */}
@@ -1951,8 +2172,10 @@ export default function CustomizeControls({
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(3, 128px)',
-                gap: '16px'
+                gridTemplateColumns: isMobile ? 'repeat(auto-fit, 128px)' : 'repeat(3, 128px)',
+                gap: '16px',
+                width: '100%',
+                justifyContent: 'center'
               }}
             >
               {/* None 버튼 */}
@@ -2113,8 +2336,10 @@ export default function CustomizeControls({
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(3, 128px)',
-                gap: '16px'
+                gridTemplateColumns: isMobile ? 'repeat(auto-fit, 128px)' : 'repeat(3, 128px)',
+                gap: '16px',
+                width: '100%',
+                justifyContent: 'center'
               }}
             >
               {/* None 버튼 */}

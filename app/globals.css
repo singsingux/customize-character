@@ -228,5 +228,333 @@ input[type="range"]::-moz-range-progress {
   button, a {
     -webkit-tap-highlight-color: transparent;
   }
+  
+  /* 모바일에서 CustomizeControls의 sticky 헤더 숨김 */
+  .lg\:hidden [style*="position: sticky"],
+  .lg\:hidden [style*="position:sticky"] {
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  
+  .lg\:hidden h3 {
+    display: none !important;
+  }
+}
+
+/* 스크롤바 숨김 */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* 모바일 메뉴 아이템이 항상 정사각형 유지되도록 */
+.mobile-menu-item {
+  aspect-ratio: 1 / 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 데스크톱 프리뷰 반응형 크기 조절 */
+.desktop-preview-inner {
+  transform-origin: center center;
+}
+
+/* 1024px ~ 1200px: 점진적 축소 */
+@media (max-width: 1199px) and (min-width: 1140px) {
+  .desktop-preview-container {
+    width: 480px !important;
+    height: 480px !important;
+  }
+  .desktop-preview-inner {
+    transform: scale(0.889);
+  }
+}
+
+@media (max-width: 1139px) and (min-width: 1080px) {
+  .desktop-preview-container {
+    width: 440px !important;
+    height: 440px !important;
+  }
+  .desktop-preview-inner {
+    transform: scale(0.815);
+  }
+}
+
+@media (max-width: 1079px) and (min-width: 1024px) {
+  .desktop-preview-container {
+    width: 400px !important;
+    height: 400px !important;
+  }
+  .desktop-preview-inner {
+    transform: scale(0.741);
+  }
+}
+
+/* 500px 이하에서 카테고리 메뉴 라벨 숨김 및 정사각형 유지 */
+@media (max-width: 500px) {
+  .category-label {
+    display: none !important;
+  }
+  
+  /* 라벨이 숨겨질 때 아이콘 버튼이 정사각형을 유지하도록 */
+  .mobile-menu-item {
+    padding: 8px !important;
+  }
+  
+  .mobile-menu-item img {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* 모바일 액션 버튼들 - 680px 기준으로 분기 */
+/* 태블릿 (680px 이상): Surprise Me/Reset 중앙, Save 우측 */
+.mobile-actions-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.mobile-actions-container > div:first-child {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mobile-surprise-btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+  width: auto;
+}
+
+.surprise-me-text {
+  display: inline;
+}
+
+.mobile-save-btn {
+  display: flex;
+  margin-left: auto;
+}
+
+/* 모바일 (680px 이하): 좌우 정렬, Surprise Me 텍스트 숨김 */
+@media (max-width: 680px) {
+  .mobile-actions-container > div:first-child {
+    position: static;
+    left: auto;
+    transform: none;
+  }
+
+  .mobile-surprise-btn {
+    width: 44px !important;
+    padding: 10px !important;
+  }
+
+  .surprise-me-text {
+    display: none !important;
+  }
+}
+
+/* Save 페이지 반응형 스타일 */
+/* 데스크탑/태블릿: 배경색과 패턴을 두 줄로 */
+@media (min-width: 681px) {
+  .save-swatches-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+
+  .save-swatches-section {
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .save-color-swatches {
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .save-pattern-swatches {
+    display: flex !important;
+    justify-content: center !important;
+  }
+}
+
+/* 데스크톱: 중앙 정렬을 위해 left/right auto, margin으로 중앙 배치 */
+@media (min-width: 681px) {
+  .save-main-container {
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
+    transform: translateY(-50%) !important;
+  }
+}
+
+/* 태블릿만: 상단 nav와 컨테이너 간격 추가, 프리뷰 축소 */
+@media (min-width: 681px) and (max-width: 1023px) {
+  .save-main-container {
+    top: calc(50% + 30px) !important; /* 중앙에서 30px 아래로 */
+  }
+
+  .save-preview-container {
+    width: 260px !important;
+    height: 260px !important;
+  }
+}
+
+/* 데스크탑: Edit 버튼 텍스트 포함, 48px 높이 */
+.save-edit-btn {
+  padding-left: 12px;
+  padding-right: 16px;
+  width: auto;
+}
+
+.edit-icon {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.edit-text {
+  display: inline;
+}
+
+/* 프리뷰 컨테이너 - 데스크탑 */
+.save-preview-container {
+  width: 300px;
+  height: 300px;
+  position: relative;
+}
+
+.save-character-layer {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.save-preview-frame {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 배경 스와치 */
+.save-bg-swatches {
+  gap: 24px;
+}
+
+.save-swatch-btn {
+  width: 80px;
+  height: 80px;
+}
+
+.save-swatch-circle {
+  top: 10px;
+  left: 10px;
+  width: 60px;
+  height: 60px;
+}
+
+.save-swatch-frame {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+/* 모바일 (680px 이하) */
+@media (max-width: 680px) {
+  /* Edit 버튼: 아이콘만, 48px */
+  .save-edit-btn {
+    padding: 0 !important;
+    width: 48px !important;
+    justify-content: center !important;
+  }
+
+  .edit-icon {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .edit-text {
+    display: none !important;
+  }
+
+  /* 프리뷰 컨테이너 축소 */
+  .save-preview-container {
+    width: 220px !important;
+    height: 220px !important;
+  }
+
+  /* Wrapper: 배경색 + 패턴을 한 줄로 합침 */
+  .save-swatches-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE and Edge */
+    margin-bottom: 32px !important;
+    white-space: nowrap !important;
+  }
+
+  .save-swatches-wrapper::-webkit-scrollbar {
+    display: none !important; /* Chrome, Safari, Opera */
+  }
+
+  .save-swatches-section {
+    display: inline !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* 배경색 스와치 */
+  .save-color-swatches {
+    display: inline-flex !important;
+    flex-wrap: nowrap !important;
+    gap: 12px !important;
+    margin-right: 12px !important;
+    vertical-align: top !important;
+  }
+
+  /* 패턴 스와치 */
+  .save-pattern-swatches {
+    display: inline-flex !important;
+    flex-wrap: nowrap !important;
+    gap: 12px !important;
+    vertical-align: top !important;
+  }
+
+  .save-swatch-btn {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  .save-swatch-circle {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .save-swatch-frame {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  /* 버튼들 vertical 배치 */
+  .save-buttons-container {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .save-buttons-container button {
+    width: 100% !important;
+    flex: none !important;
+  }
 }
 
