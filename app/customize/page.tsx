@@ -203,7 +203,13 @@ export default function CustomizePage() {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden relative fade-in" style={{ height: '100vh' }}>
+    <div 
+      className="h-screen flex flex-col overflow-hidden relative fade-in" 
+      style={{ 
+        height: '100vh',
+        maxHeight: '-webkit-fill-available'
+      }}
+    >
       {/* 왼쪽: Floating Category Menu - Fixed (데스크톱만) */}
       <div 
         className="hidden lg:flex fixed items-center z-40"
@@ -524,7 +530,14 @@ export default function CustomizePage() {
       </div>
 
       {/* 모바일 메인 컨텐츠 */}
-      <div className="lg:hidden flex flex-col" style={{ height: '100vh', paddingTop: '72px' }}>
+      <div 
+        className="lg:hidden flex flex-col" 
+        style={{ 
+          height: '100vh',
+          maxHeight: '-webkit-fill-available',
+          paddingTop: '72px' 
+        }}
+      >
         {/* 상단: 프리뷰 영역 */}
         <div className="flex items-center justify-center" style={{ padding: '24px 24px 16px 24px' }}>
           <div 

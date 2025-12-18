@@ -39,7 +39,10 @@ export default function Home() {
   return (
     <main 
       className="h-screen flex flex-col overflow-hidden relative fade-in"
-      style={{ height: '100vh' }}
+      style={{ 
+        height: '100vh',
+        maxHeight: '-webkit-fill-available'
+      }}
     >
       {/* 중앙 컨텐츠 */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-8 relative z-10" style={{ paddingTop: '88px' }}>

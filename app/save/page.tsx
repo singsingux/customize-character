@@ -383,6 +383,7 @@ function SavePageContent() {
         justifyContent: 'center',
         height: '100vh',
         minHeight: '100vh',
+        maxHeight: '-webkit-fill-available',
         position: 'relative',
         overflow: 'hidden',
       }}
