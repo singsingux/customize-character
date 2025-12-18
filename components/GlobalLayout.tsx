@@ -81,8 +81,17 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
                 gap: isMobile ? '16px' : '40px'
               }}
             >
-              {/* 로고 */}
-              <div className="flex items-center">
+              {/* 로고 (클릭 시 메인으로 이동) */}
+              <button 
+                onClick={() => handleNavigation('/')}
+                className="flex items-center"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer'
+                }}
+              >
                 <Image 
                   src="/logo.svg" 
                   alt="Logo" 
@@ -112,7 +121,7 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
                 >
                   Mugshot Lab
                 </span>
-              </div>
+              </button>
               
               {/* 메뉴 */}
               <div className="flex items-center gap-3 sm:gap-4">
@@ -255,8 +264,18 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
       {!isSavePage && isSmallScreen && (
         <div className="w-full px-6 py-4 fixed top-0 left-0 right-0 z-50 hamburger-menu" style={{ backgroundColor: 'transparent' }}>
           <div className="flex items-center justify-between" style={{ height: '48px' }}>
-            {/* 좌측: 로고 + 디바이더 + 문구 (컨테이너 없이) */}
-            <div className="flex items-center" style={{ gap: '12px' }}>
+            {/* 좌측: 로고 + 디바이더 + 문구 (클릭 시 메인으로 이동) */}
+            <button 
+              onClick={() => handleNavigation('/')}
+              className="flex items-center" 
+              style={{ 
+                gap: '12px',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer'
+              }}
+            >
               <Image 
                 src="/logo.svg" 
                 alt="Logo" 
@@ -283,7 +302,7 @@ export default function GlobalLayout({ children }: { children: React.ReactNode }
               >
                 Mugshot Lab
               </span>
-            </div>
+            </button>
 
             {/* 우측: 햄버거 메뉴 */}
             <button
