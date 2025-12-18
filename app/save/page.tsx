@@ -352,49 +352,41 @@ function SavePageContent() {
       ctx.restore();
 
       // 3. PNG로 다운로드
-      // iOS Safari 감지
-      const isIOSSafari = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+      // iOS/모바일 Safari 감지
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      const isIOSSafari = isIOS || (isSafari && 'ontouchstart' in window);
       
       if (isIOSSafari) {
-        // iOS Safari: toDataURL 사용하여 새 탭에서 열기
+        // iOS Safari/모바일: toDataURL 사용 + <a> 태그로 새 탭에서 열기 (팝업 차단 회피)
         try {
-          const dataUrl = canvas.toDataURL('image/png');
+          const dataUrl = canvas.toDataURL('image/png', 1.0);
           const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
           const filename = `REDROB_avatar_${timestamp}.png`;
           
-          // 새 창에서 이미지 열기 (사용자가 길게 눌러서 저장 가능)
-          const newWindow = window.open();
-          if (newWindow) {
-            newWindow.document.write(`
-              <html>
-                <head>
-                  <title>${filename}</title>
-                  <style>
-                    body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f0f0f0; }
-                    img { max-width: 100%; height: auto; }
-                    .download-info { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 16px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
-                  </style>
-                </head>
-                <body>
-                  <div class="download-info">
-                    <p style="margin: 0 0 8px 0; font-weight: 600;">이미지를 길게 눌러서 저장하세요</p>
-                    <p style="margin: 0; font-size: 12px; color: #666;">Long press the image to save</p>
-                  </div>
-                  <img src="${dataUrl}" alt="${filename}">
-                </body>
-              </html>
-            `);
-            newWindow.document.close();
-          } else {
-            alert('팝업이 차단되었습니다. 팝업을 허용해주세요.');
-          }
-          console.log('Opened in new window for iOS!');
+          // <a> 태그 생성하여 새 탭에서 열기 (팝업 차단 회피)
+          const link = document.createElement('a');
+          link.href = dataUrl;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          
+          // iOS에서는 download 속성이 작동하지 않으므로 새 탭에서 열고 수동 저장
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          // 사용자에게 안내 메시지
+          setTimeout(() => {
+            alert('새 탭에서 이미지를 길게 눌러서 저장해주세요.\n\nLong press the image in the new tab to save.');
+          }, 500);
+          
+          console.log('Opened in new tab for iOS/mobile!');
         } catch (error) {
           console.error('Failed to create data URL:', error);
           alert('이미지 생성에 실패했습니다.');
         }
       } else {
-        // 기타 브라우저: toBlob 사용
+        // 기타 브라우저: toBlob 사용 (자동 다운로드)
         canvas.toBlob((blob) => {
           if (blob) {
             const url = URL.createObjectURL(blob);
@@ -404,7 +396,6 @@ function SavePageContent() {
             link.download = `REDROB_avatar_${timestamp}.png`;
             document.body.appendChild(link);
             
-            // iOS가 아닌 경우 약간의 지연 후 클릭
             setTimeout(() => {
               link.click();
               document.body.removeChild(link);
