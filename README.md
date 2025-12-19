@@ -11,32 +11,30 @@ An interactive web application for creating and customizing character avatars wi
 
 ### 🎭 Complete Character Customization
 - **7 Customization Categories**
-  - 🎨 Skin Tone (12 variations)
+  - 🎨 Skin Tone (12 styles)
   - 👁️ Eyes (5 styles + color picker with 16 presets)
   - 👃 Nose (3 styles with size & position control)
   - 👄 Mouth (6 styles with size & position control)
-  - 💇 Hair (34 styles + color picker with gradient)
-  - ✨ Features (13 variations)
+  - 💇 Hair (34 styles + color picker 16 presets)
+  - ✨ Features (13 styles)
   - 🎩 Accessories (Headwear, Eyewear, Piercings)
 
 ### 🎨 Advanced Customization Tools
-- **Real-time Color Picker**: 16 preset colors for Eyes and Hair
+- **Color Presets**: 16 preset colors for Eyes and Hair
 - **Gradient Support**: Multi-color gradients for hair
 - **Positioning Sliders**: Precise X/Y positioning for facial features
-- **Size Control**: Adjustable sizing for nose and mouth
-- **Eye Spacing**: Control distance between eyes (-15 to +15)
+- **Size Control Sliders**: Adjustable sizing for nose and mouth
+- **Eye Spacing Sliders**: Control distance between eyes
 
 ### 💾 Save & Export
-- **Background Selection**: Choose from 10 colors or 3 patterns
+- **Background Selection**: Choose from 6 colors or 3 patterns
 - **PNG Export**: Download high-quality 600x600px avatar
 - **Local Storage**: Automatically saves your customization
 
 ### 🎯 UI/UX Features
-- **Smooth Page Transitions**: Animated navigation between pages
 - **Floating Category Menu**: Easy access to all customization options
-- **Responsive Design**: Optimized for desktop experience
+- **Responsive Design**: Optimized for all desktop, tablet and moble experience
 - **Surprise Me**: Random avatar generator
-- **Reset Button**: Quick return to defaults
 
 ## 🚀 Getting Started
 
@@ -48,7 +46,7 @@ An interactive web application for creating and customizing character avatars wi
 
 1. Clone the repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/customize-character.git
+git clone https://github.com/singsingux/customize-character.git
 cd customize-character
 ```
 
@@ -106,14 +104,14 @@ Landing page with animated character carousel
 Full customization interface with category menu and real-time preview
 
 ### Save Page
-Background selection and PNG export functionality
+Background color selection and PNG export functionality
 
 ## 🎯 Usage
 
-1. **Start Customizing**: Click "시작하기" on the main page
+1. **Start Customizing**: Click "Get Started" on the main page
 2. **Select Category**: Choose from the left floating menu
 3. **Customize**: Pick items and adjust sliders
-4. **Save**: Click "저장하기" to proceed to save page
+4. **Save**: Click "Save" to proceed to save page
 5. **Choose Background**: Select a color or pattern
 6. **Download**: Click "Download" to export as PNG
 
@@ -154,7 +152,7 @@ npm start
 
 ## 🗺️ Roadmap
 
-- [ ] Mobile responsive design
+- [✅] Mobile responsive design
 - [ ] More character styles and accessories
 - [ ] Animation preview
 - [ ] Share avatar via URL
@@ -183,8 +181,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-Project Link: [https://github.com/YOUR_USERNAME/customize-character](https://github.com/YOUR_USERNAME/customize-character)
+Project Link: [https://github.com/singsingux/customize-character](https://github.com/singsingux/customize-character)
 
 ---
 
-Made with ❤️ using Next.js and TypeScript
+Made with by Emily and Haley ❤️ using Next.js and TypeScript
